@@ -172,7 +172,7 @@ public class Player extends MapObject {
     			else {
     				if(
     					enemy.getX() < x &&
-    					enemy.getX() > x + scratchRange &&
+    					enemy.getX() > x - scratchRange &&
     					enemy.getY() > y - height / 2 &&
     					enemy.getY() < y + height / 2
     				) {
@@ -189,7 +189,22 @@ public class Player extends MapObject {
 	    			break;
 	    		}
 	    	}
+	    	
+	    	// check enemy collisions
+	    	if(intersects(enemy)) {
+	    		hit(enemy.damage);
+	    	}
 	    }
+    	
+    }
+    
+    public void hit(int damage) {
+    	if(Flinching) return;
+    	health -= damage;
+    	if(health < 0) health = 0;
+    	if(health == 0) Dead = true;
+    	Flinching = true;
+    	flinchTime = System.nanoTime();
     }
 
     public void getNextPosition(){
@@ -264,6 +279,12 @@ public class Player extends MapObject {
                 fireBalls.remove(i);
                 i--;
             }
+        }
+        
+        // check done flinching
+        if(Flinching) {
+        	long elapsed = (System.nanoTime() - flinchTime) / 1000000;
+        	if(elapsed > 1000) Flinching = false;
         }
 
         // set animations

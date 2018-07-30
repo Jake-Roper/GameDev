@@ -44,7 +44,7 @@ public class Level1State extends GameState{
     }
 
     public void init() {
-
+    	
         tileMap = new TileMap(30);
         tileMap.loadTiles("/Tilesets/grasstileset.gif");
         tileMap.loadMap("/Maps/level1-1.map");
@@ -79,6 +79,8 @@ public class Level1State extends GameState{
         populateEnemies();
         
         explosions = new ArrayList<Explosion>();
+        
+    	eventStart();
 
     }
     
